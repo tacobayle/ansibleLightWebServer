@@ -1,0 +1,34 @@
+---
+ifconfigClient:
+  - iface: ens33
+    cidr: 10.1.2.2/24
+
+dns:
+  iface: ens32
+  ip: 10.1.2.50
+
+ifconfigServer:
+  - iface: ens34
+    cidr: 172.16.3.251/24
+  - iface: ens34
+    cidr: 172.16.3.252/24
+  - iface: ens34
+    cidr: 172.16.3.253/24
+  - iface: ens34
+    cidr: 172.16.3.254/24
+
+routes:
+  - cidr: 10.1.2.0/24
+    nexthop: 10.1.7.1
+  # - cidr: 10.1.2.52
+  #   nexthop: 10.1.7.1
+
+docker:
+  - name: web1
+    image: tacobayle/web1
+  - name: web2
+    image: tacobayle/web2
+  - name: web3
+    image: tacobayle/web3
+  - name: web4
+    image: tacobayle/web4

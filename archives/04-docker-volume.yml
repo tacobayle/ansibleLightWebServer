@@ -1,0 +1,22 @@
+---
+- hosts: ubuntu
+  become: true
+  become_user: root
+  become_method: sudo
+
+  tasks:
+
+  - name: Create docker volume
+    become: true
+    shell: |
+      docker volume create {{ dockervolume }}
+    register: volume
+
+  - name: show output
+    debug:
+      var: volume.stdout
+
+#
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="dockervolume=volnginx3" 04-docker-volume.yml
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="dockervolume=volnginx4" 04-docker-volume.yml
+#

@@ -1,0 +1,27 @@
+---
+- hosts: ubuntu
+#  become: true
+#  become_user: root
+#  become_method: sudo
+
+  tasks:
+  - name: create new directory
+#    become: true
+    shell: |
+      mkdir .ssh
+
+    register: shellvalue
+
+  - name: copy keys for putty
+#    become: true
+    copy:
+      src: /home/avi/ssh/authorized_keys
+      dest: /home/avi/.ssh/authorized_keys
+
+  - name: show output
+    debug:
+      var: shellvalue.stdout
+
+#
+# EXAMPLE: ansible-playbook -i hosts 01-ssh-key.yml
+#

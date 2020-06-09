@@ -1,0 +1,36 @@
+---
+- hosts: ubuntu
+  become: true
+  become_user: root
+  become_method: sudo
+
+  tasks:
+
+  - name: copy html file
+    become: true
+    copy:
+      src: /home/avi/html/{{ namedocker }}/nginx.html
+      dest: /home/avi
+
+  - name: create docker volume
+    become: true
+    shell: |
+      docker volume create {{ namedocker }}
+      cp nginx.html /var/lib/docker/volumes/{{ namedocker }}/_data/nginx.html
+      rm nginx.html
+
+  - name: launch nginx webserver
+    become: true
+    shell: |
+      docker run -d -p {{ ip }}:80:80 --name {{ namedocker }} --mount source={{ namedocker }},target=/usr/share/nginx/html/custom --restart unless-stopped nginx
+    register: nginx
+
+  - name: show output
+    debug:
+      var: nginx.stdout
+#
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="ip=172.16.1.254 namedocker=nginx1" 05-launch-docker.yml
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="ip=172.16.1.253 namedocker=nginx2" 05-launch-docker.yml
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="ip=172.16.1.252 namedocker=nginx3" 05-launch-docker.yml
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="ip=172.16.1.251 namedocker=nginx4" 05-launch-docker.yml
+#

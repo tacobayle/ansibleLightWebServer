@@ -1,0 +1,26 @@
+---
+- hosts: ubuntu
+  become: true
+  become_user: root
+  become_method: sudo
+
+  tasks:
+  - name: configure IPs
+    become: true
+    shell: |
+       ip address add {{ ip }} dev {{ iface }}
+       ip link set {{ iface }} up
+
+    register: shellvalue
+
+  - name: show output
+    debug:
+      var: shellvalue.stdout
+
+#
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="iface=eth1 ip=1.1.1.254/24" 03-ipconfig.yml
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="iface=eth2 ip=172.16.1.254/24" 03-ipconfig.yml
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="iface=eth2 ip=172.16.1.253/24" 03-ipconfig.yml
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="iface=eth2 ip=172.16.1.252/24" 03-ipconfig.yml
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="iface=eth2 ip=172.16.1.251/24" 03-ipconfig.yml
+#

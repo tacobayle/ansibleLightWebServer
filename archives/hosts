@@ -1,0 +1,11 @@
+---
+all:
+  children:
+    ubuntu:
+      hosts:
+        cs:
+          ansible_host: 192.168.17.154
+  vars:
+    ansible_user: avi
+    ansible_ssh_pass: avi123
+    ansible_become_pass: avi123

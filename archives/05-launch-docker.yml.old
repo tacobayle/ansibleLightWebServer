@@ -1,0 +1,34 @@
+---
+- hosts: ubuntu
+  become: true
+  become_user: root
+  become_method: sudo
+
+  tasks:
+
+  - name: launch nginx webserver
+    become: true
+    shell: |
+      docker run -d -p {{ ip }}:80:80 --name {{ namedocker }} --restart unless-stopped nginx
+    register: nginx
+
+  - name: show output
+    debug:
+      var: nginx.stdout
+
+#  - name: launch nginx webserver custom
+#    become: true
+#    shell: |
+#      sudo docker run -d -p 172.16.1.252:80:80 --name nginx3 --mount source=volnginx3,target=/usr/share/nginx/html/custom --restart unless-stopped nginx
+#      sudo docker run -d -p 172.16.1.251:80:80 --name nginx4 --mount source=volnginx4,target=/usr/share/nginx/html/custom --restart unless-stopped nginx
+#    register: nginxc
+#
+#  - name: show output
+#    debug:
+#      var: nginxc.stdout
+
+
+#
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="ip=172.16.1.254 namedocker=nginx1" 05-launch-docker.yml
+# EXAMPLE: ansible-playbook -i hosts --extra-vars="ip=172.16.1.253 namedocker=nginx2" 05-launch-docker.yml
+#

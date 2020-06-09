@@ -1,0 +1,4 @@
+---
+# - import_playbook: sysAdmin.yml
+- import_playbook: pbConfigureIp.yml
+- import_playbook: pbdocker.yml

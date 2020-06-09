@@ -1,0 +1,21 @@
+---
+- hosts: ubuntu
+#  become: true
+#  become_user: root
+#  become_method: sudo
+
+  tasks:
+
+  - name: copy http python3 script
+#    become: true
+    copy:
+      src: /home/avi/python/generate.py
+      dest: /home/avi/generate.py
+
+  - name: show output
+    debug:
+      var: shellvalue.stdout
+
+#
+# EXAMPLE: ansible-playbook -i hosts 06-http-script-transfer.yml
+#
